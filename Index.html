@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>京阪大阪 8天7夜 溫馨旅程手冊</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        jp: {
+                            bg: '#fcfaf7',        /* 柔和米白紙張底色 */
+                            paper: '#ffffff',     /* 純白卡片底色 */
+                            border: '#e6ded3',    /* 溫暖柔和邊框 */
+                            primary: '#b85d38',   /* 日系沉穩柿木棕/赤陶紅 */
+                            secondary: '#6b7a69', /* 抹茶灰綠 */
+                            accent: '#d9822b',    /* 暖黃橘 */
+                            text: '#4a4541',      /* 柔和深咖啡文字 */
+                            muted: '#8c8278'      /* 淺灰褐輔助文字 */
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Zen Maru Gothic"', '"M PLUS Rounded 1c"', 'sans-serif'],
+                        serif: ['"Noto Serif JP"', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts: 圓潤日系字體 Zen Maru Gothic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #fcfaf7;
+            color: #4a4541;
+            font-family: 'Zen Maru Gothic', sans-serif;
+        }
+        /* 手繪風格陰影與邊框 */
+        .jp-card {
+            background-color: #ffffff;
+            border: 2px solid #e6ded3;
+            border-radius: 1.5rem;
+            box-shadow: 4px 4px 0px rgba(230, 222, 211, 0.6);
+            transition: all 0.2s ease;
+        }
+        .jp-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 0px rgba(217, 130, 43, 0.2);
+        }
+        .jp-tag {
+            background-color: #f4efe6;
+            color: #b85d38;
+            border: 1px dashed #d6ccc2;
+        }
+        /* 地圖連結懸停樣式 */
+        .map-link {
+            display: inline-flex;
+            items-center: center;
+            gap: 0.25rem;
+            color: #b85d38;
+            transition: color 0.15s ease;
+        }
+        .map-link:hover {
+            color: #d9822b;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-amber-100 selection:text-amber-900">
+
+    <!-- 日系手繪風頂部導覽列 -->
+    <header class="bg-[#fcfaf7]/90 backdrop-blur-md sticky top-0 z-50 border-b-2 border-[#e6ded3]">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-lg md:text-xl font-bold text-jp-primary flex items-center gap-2 tracking-wide">
+                <i class="fa-solid fa-mug-hot"></i> 京阪大阪 8天7夜 の 旅手帖
+            </h1>
+            <nav class="hidden md:flex gap-6 text-sm font-medium text-jp-text">
+                <a href="#flight" class="hover:text-jp-primary transition">航班資訊</a>
+                <a href="#hotels" class="hover:text-jp-primary transition">住宿一覽</a>
+                <a href="#itinerary" class="hover:text-jp-primary transition">每日行程</a>
+                <a href="#reservations" class="hover:text-jp-primary transition">預約總表</a>
+                <a href="#checklist" class="hover:text-jp-primary transition">行前清單</a>
+                <a href="#calculator" class="hover:text-jp-primary transition">匯率換算</a>
+            </nav>
+            <button id="mobileMenuBtn" class="md:hidden text-jp-primary text-xl focus:outline-none">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </button>
+        </div>
+        <!-- 手機版展開選單 -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-b-2 border-[#e6ded3] px-6 py-4 space-y-3 font-medium">
+            <a href="#flight" class="block text-jp-text hover:text-jp-primary">航班資訊</a>
+            <a href="#hotels" class="block text-jp-text hover:text-jp-primary">住宿一覽</a>
+            <a href="#itinerary" class="block text-jp-text hover:text-jp-primary">每日行程</a>
+            <a href="#reservations" class="block text-jp-text hover:text-jp-primary">預約總表</a>
+            <a href="#checklist" class="block text-jp-text hover:text-jp-primary">行前清單</a>
+            <a href="#calculator" class="block text-jp-text hover:text-jp-primary">匯率換算</a>
+        </div>
+    </header>
+
+    <!-- 主要內容 -->
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 md:px-6 py-10 space-y-16">
+
+        <!-- 航班資訊區塊 -->
+        <section id="flight" class="scroll-mt-28">
+            <div class="flex items-center gap-2 mb-6 border-b-2 border-dashed border-[#e6ded3] pb-3">
+                <span class="text-jp-primary text-2xl">✈️</span>
+                <h2 class="text-2xl font-bold text-jp-text">航班情報</h2>
+                <span class="text-xs text-jp-muted ml-2">2026/10/10（六）～ 2026/10/17（六）</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 去程 -->
+                <div class="jp-card p-6 relative overflow-hidden bg-white">
+                    <div class="absolute top-0 right-0 bg-[#faedcd] text-[#9c6644] text-xs px-4 py-1.5 rounded-bl-2xl font-bold tracking-wider">去程 10/10（六）</div>
+                    <div class="text-xs font-semibold text-jp-muted mb-2">Peach MM024 ｜ A320neo</div>
+                    <div class="flex justify-between items-center my-4">
+                        <div>
+                            <div class="text-3xl font-black text-jp-text">TPE</div>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Taiwan+Taoyuan+International+Airport" target="_blank" rel="noopener noreferrer" class="text-xs map-link">
+                                台北桃園 <i class="fa-solid fa-map-pin text-[10px]"></i>
+                            </a>
+                            <div class="text-sm font-bold text-jp-primary mt-1">09:30</div>
+                        </div>
+                        <div class="text-center flex-1 px-4">
+                            <div class="text-xs text-jp-muted mb-1">直飛</div>
+                            <div class="border-t-2 border-dashed border-[#d6ccc2] relative">
+                                <i class="fa-solid fa-plane text-jp-primary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-2 text-xs"></i>
+                            </div>
+                            <div class="text-xs text-jp-secondary font-bold mt-1">樂桃航空</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-3xl font-black text-jp-text">KIX</div>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Kansai+International+Airport" target="_blank" rel="noopener noreferrer" class="text-xs map-link">
+                                關西機場 <i class="fa-solid fa-map-pin text-[10px]"></i>
+                            </a>
+                            <div class="text-sm font-bold text-jp-primary mt-1">13:20</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 回程 -->
+                <div class="jp-card p-6 relative overflow-hidden bg-white">
+                    <div class="absolute top-0 right-0 bg-[#e3f2fd] text-[#1565c0] text-xs px-4 py-1.5 rounded-bl-2xl font-bold tracking-wider">回程 10/17（六）</div>
+                    <div class="text-xs font-semibold text-jp-muted mb-2">Peach MM027 ｜ A320neo</div>
+                    <div class="flex justify-between items-center my-4">
+                        <div>
+                            <div class="text-3xl font-black text-jp-text">KIX</div>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Kansai+International+Airport" target="_blank" rel="noopener noreferrer" class="text-xs map-link">
+                                關西機場 <i class="fa-solid fa-map-pin text-[10px]"></i>
+                            </a>
+                            <div class="text-sm font-bold text-jp-primary mt-1">15:15</div>
+                        </div>
+                        <div class="text-center flex-1 px-4">
+                            <div class="text-xs text-jp-muted mb-1">直飛</div>
+                            <div class="border-t-2 border-dashed border-[#d6ccc2] relative">
+                                <i class="fa-solid fa-plane fa-rotate-180 text-blue-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-2 text-xs"></i>
+                            </div>
+                            <div class="text-xs text-blue-600 font-bold mt-1">樂桃航空</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-3xl font-black text-jp-text">TPE</div>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Taiwan+Taoyuan+International+Airport" target="_blank" rel="noopener noreferrer" class="text-xs map-link">
+                                台北桃園 <i class="fa-solid fa-map-pin text-[10px]"></i>
+                            </a>
+                            <div class="text-sm font-bold text-jp-primary mt-1">17:30</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 住宿總表 -->
+        <section id="hotels" class="scroll-mt-28">
+            <div class="flex items-center gap-2 mb-6 border-b-2 border-dashed border-[#e6ded3] pb-3">
+                <span class="text-jp-primary text-2xl">🏨</span>
+                <h2 class="text-2xl font-bold text-jp-text">住宿一覽</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="jp-card p-6 bg-white flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-bold px-3 py-1 rounded-full jp-tag inline-block mb-3">10/10 ～ 10/13（3晚）</span>
+                        <h3 class="font-bold text-jp-text text-lg mb-1">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Rakuten+STAY+URBAN+京都四条大宮" target="_blank" rel="noopener noreferrer" class="map-link">
+                                Rakuten STAY URBAN 京都四条大宮 <i class="fa-solid fa-map-location-dot"></i>
+                            </a>
+                        </h3>
+                        <p class="text-xs text-jp-muted leading-relaxed mb-4">66, ayaomiya-cho, Shimogyo-ku, Kyoto 600-8383</p>
+                    </div>
+                    <div class="text-xs text-jp-secondary font-medium border-t border-[#f4efe6] pt-3 flex justify-between">
+                        <span>入住 15:00 ~ 00:00</span>
+                        <span>退房 11:00 前</span>
+                    </div>
+                </div>
+
+                <div class="jp-card p-6 bg-white flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-bold px-3 py-1 rounded-full jp-tag inline-block mb-3">10/13 ～ 10/15（2晚）</span>
+                        <h3 class="font-bold text-jp-text text-lg mb-1">
+                            <a href="https://www.google.com/maps/search/?api=1&query=ART+HOTEL+Osaka+Bay+Tower" target="_blank" rel="noopener noreferrer" class="map-link">
+                                ART HOTEL Osaka Bay Tower <i class="fa-solid fa-map-location-dot"></i>
+                            </a>
+                        </h3>
+                        <p class="text-xs text-jp-muted leading-relaxed mb-4">1 Chome-2-1 Benten, Minato-ku, Osaka 552-0007</p>
+                    </div>
+                    <div class="text-xs text-jp-secondary font-medium border-t border-[#f4efe6] pt-3 flex justify-between">
+                        <span>入住 15:00 ~ 00:00</span>
+                        <span>退房 11:00 前</span>
+                    </div>
+                </div>
+
+                <div class="jp-card p-6 bg-white flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-bold px-3 py-1 rounded-full jp-tag inline-block mb-3">10/15 ～ 10/17（2晚）</span>
+                        <h3 class="font-bold text-jp-text text-lg mb-1">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Apartment+Hotel+11+新今宮1" target="_blank" rel="noopener noreferrer" class="map-link">
+                                住一新今宮1號店 (Apartment Hotel 11) <i class="fa-solid fa-map-location-dot"></i>
+                            </a>
+                        </h3>
+                        <p class="text-xs text-jp-muted leading-relaxed mb-4">3-14-13 Ebisunishi, Naniwa-ku, Osaka 556-0003</p>
+                    </div>
+                    <div class="text-xs text-jp-secondary font-medium border-t border-[#f4efe6] pt-3 flex justify-between">
+                        <span>入住 16:00 後</span>
+                        <span>退房 10:00 前</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- D1-D8 行程卡片區塊 (附 Google Maps 定位) -->
+        <section id="itinerary" class="scroll-mt-28">
+            <div class="flex items-center justify-between mb-6 border-b-2 border-dashed border-[#e6ded3] pb-3">
+                <div class="flex items-center gap-2">
+                    <span class="text-jp-primary text-2xl">🌸</span>
+                    <h2 class="text-2xl font-bold text-jp-text">D1 - D8 完整每日行程手帳</h2>
+                </div>
+                <span class="text-xs text-jp-muted hidden sm:inline-block">點選地點即可開啓 Google 地圖導航 📍</span>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- DAY 1 -->
+                <div class="jp-card p-6 bg-white flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="bg-jp-primary text-white text-xs font-bold px-3 py-1 rounded-full">DAY 1</span>
+                            <span class="text-xs font-bold text-jp-muted">10/10（六）</span>
+                        </div>
+                        <h3 class="font-bold text-jp-text text-base mb-3 leading-snug">桃園 → 關西 → 京都 → 燒肉弘 → Seria</h3>
+                        <div class="text-xs text-jp-text space-y-2 mb-4 leading-relaxed font-medium bg-[#fcfaf7] p-3 rounded-xl border border-[#f4efe6]">
+                            <p><b>09:30</b> ✈️ <a href="https://www.google.com/maps/search/?api=1&query=Taoyuan+International+Airport" target="_blank" class="map-link">Peach MM024 桃園起飛 📍</a></p>
+                            <p><b>13:20</b> 抵達<a href="https://www.google.com/maps/search/?api=1&query=Kansai+International+Airport" target="_blank" class="map-link">關西國際機場 KIX 📍</a></p>
+                            <p><b>13:20-14:20</b> 入境＋領行李 (預留45-60分)</p>
+                            <p><b>14:20-15:35</b> 🚆 HARUKA → <a href="https://www.google.com/maps/search/?api=1&query=Kyoto+Station" target="_blank" class="map-link">京都站 📍</a> (約75分)</p>
+                            <p><b>15:35-16:10</b> 京都站 → <a href="https://www.google.com/maps/search/?api=1&query=Shijo-Omiya+Station" target="_blank" class="map-link">四条大宮 📍</a></p>
+                            <p><b>16:10-17:15</b> 🏨 <a href="https://www.google.com/maps/search/?api=1&query=Rakuten+STAY+URBAN+京都四条大宮" target="_blank" class="map-link">Rakuten STAY 📍</a> Check-in 休息</p>
+                            <p><b>17:15-18:10</b> 前往<a href="https://www.google.com/maps/search/?api=1&query=Karasuma+Nishiki" target="_blank" class="map-link">烏丸錦一帶 📍</a></p>
+                            <p><b>18:30-20:30</b> 🥩 <a href="https://www.google.com/maps/search/?api=1&query=燒肉+弘商店+烏丸錦" target="_blank" class="map-link">燒肉 弘商店 烏丸錦 📍</a>【已預約 5,000円Course】</p>
+                            <p><b>20:30-21:15</b> 🛒 <a href="https://www.google.com/maps/search/?api=1&query=Seria+阪急大宮店" target="_blank" class="map-link">Seria 阪急大宮店 📍</a> 採買旅行小物</p>
+                            <p><b>21:15後</b> 返回飯店休息</p>
+                        </div>
+                        <div class="text-[11px] text-amber-800 bg-amber-50 p-2.5 rounded-lg border border-amber-200 mb-3">
+                            <b>💡 備註：</b>首日不排大型景點。順利入境 → 京都 → 入住 → 晚餐 → 採買 → 休息。
+                        </div>
+                    </div>
+                    <div class="border-t border-[#f4efe6] pt-3 text-xs text-jp-secondary flex items-center justify-between font-medium">
+                        <span><i class="fa-solid fa-hotel"></i> 京都四条大宮</span>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Rakuten+STAY+URBAN+京都四条大宮" target="_blank" class="map-link text-[11px]">導航 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>
+                    </div>
+                </div>
+
+                <!-- DAY 2 -->
+                <div class="jp-card p-6 bg-white flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="bg-jp-primary text-white text-xs font-bold px-3 py-1 rounded-full">DAY 2</span>
+                            <span class="text-xs font-bold text-jp-muted">10/11（日）</span>
+                        </div>
+                        <h3 class="font-bold text-jp-text text-base mb-3 leading-snug">清水寺、二年三年坂 ＆ 任天堂</h3>
+                        <div class="text-xs text-jp-text space-y-2 mb-4 leading-relaxed font-medium bg-[#fcfaf7] p-3 rounded-xl border border-[#f4efe6]">
+                            <p><b>08:00</b> 起床＋早餐</p>
+                            <p><b>08:30-09:15</b> 🚍 四条大宮 → <a href="https://www.google.com/maps/search/?api=1&query=Kiyomizu-dera" target="_blank" class="map-link">清水寺 📍</a> (塞車可改計程車)</p>
+                            <p><b>09:15-11:00</b> ⛩️ <a href="https://www.google.com/maps/search/?api=1&query=Kiyomizu-dera" target="_blank" class="map-link">清水寺 📍</a> (舞台＋音羽瀑布)</p>
+                            <p><b>11:00-12:15</b> 🏮 <a href="https://www.google.com/maps/search/?api=1&query=Ninenzaka+Sannenzaka" target="_blank" class="map-link">二年坂・三年坂 📍</a> 古街散策</p>
+                            <p><b>12:15-13:15</b> 🍜 午餐候選 (依現場人潮)</p>
+                            <p><b>13:15-14:30</b> <a href="https://www.google.com/maps/search/?api=1&query=Gion+Kawaramachi" target="_blank" class="map-link">祇園／四条河原町 📍</a> 購物</p>
+                            <p><b>14:30-15:20</b> 🎮 <a href="https://www.google.com/maps/search/?api=1&query=Nintendo+KYOTO" target="_blank" class="map-link">Nintendo KYOTO 📍</a> (高島屋T8 7F)</p>
+                            <p><b>15:20-16:10</b> ⚡ <a href="https://www.google.com/maps/search/?api=1&query=Pokemon+Center+KYOTO" target="_blank" class="map-link">Pokémon Center KYOTO 📍</a> (SUINA室町2F)</p>
+                            <p><b>16:10-18:00</b> 河原町自由購物＋晚餐</p>
+                        </div>
+                        <div class="text-[11px] text-amber-800 bg-amber-50 p-2.5 rounded-lg border border-amber-200 mb-3">
+                            <b>⚠️ 注意：</b>週日＋日本連假人潮多！若Nintendo排隊太長直接調整順序，不犧牲清水寺。
+                        </div>
+                    </div>
+                    <div class="border-t border-[#f4efe6] pt-3 text-xs text-jp-secondary flex items-center justify-between font-medium">
+                        <span><i class="fa-solid fa-hotel"></i> 京都四条大宮</span>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Kiyomizu-dera" target="_blank" class="map-link text-[11px]">清水寺地圖 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>
+                    </div>
+                </div>
+
+                <!-- DAY 3 -->
+                <div class="jp-card p-6 bg-white flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="bg-jp-primary text-white text-xs font-bold px-3 py-1 rounded-full">DAY 3</span>
+                            <span class="text-xs font-bold text-jp-muted">10/12（一）</span>
+                        </div>
+                        <h3 class="font-bold text-jp-text text-base mb-3 leading-snug">伏見稻荷大社 ＆ 宇治抹茶</h3>
+                        <div class="text-xs text-jp-text space-y-2 mb-4 leading-relaxed font-medium bg-[#fcfaf7] p-3 rounded-xl border border-[#f4efe6]">
+                            <p><b>07:30</b> 起床</p>
+                            <p><b>08:15-08:40</b> 🚆 四条大宮 → <a href="https://www.google.com/maps/search/?api=1&query=Fushimi+Inari+Taisha" target="_blank" class="map-link">伏見稻荷 📍</a></p>
+                            <p><b>08:40-11:00</b> ⛩️ <a href="https://www.google.com/maps/search/?api=1&query=Fushimi+Inari+Taisha" target="_blank" class="map-link">伏見稻荷大社 📍</a> (千本鳥居)</p>
+                            <p><b>11:00-11:30</b> 伏見稻荷周邊小吃伴手禮</p>
+                            <p><b>11:30-12:00</b> 🚆 伏見稻荷 → <a href="https://www.google.com/maps/search/?api=1&query=Uji+Station" target="_blank" class="map-link">宇治 📍</a></p>
+                            <p><b>12:00-13:30</b> 🍵 宇治午餐＋抹茶<br>
+                               &nbsp;• 主選：<a href="https://www.google.com/maps/search/?api=1&query=中村藤吉+本店+宇治" target="_blank" class="map-link">中村藤吉本店 📍</a><br>
+                               &nbsp;• 備選：<a href="https://www.google.com/maps/search/?api=1&query=伊藤久右衛門+宇治本店" target="_blank" class="map-link">伊藤久右衛門 📍</a>
+                            </p>
+                            <p><b>13:30-15:30</b> ⛩️ <a href="https://www.google.com/maps/search/?api=1&query=Byodoin+Temple" target="_blank" class="map-link">平等院 📍</a>＋<a href="https://www.google.com/maps/search/?api=1&query=Uji+River" target="_blank" class="map-link">宇治川 📍</a> 散步</p>
+                            <p><b>15:30-16:30</b> 第二抹茶候選／伴手禮</p>
+                            <p><b>16:30-17:30</b> 🚆 宇治 → 京都</p>
+                            <p><b>17:30後</b> 晚餐＋返回飯店</p>
+                        </div>
+                        <div class="text-[11px] text-amber-800 bg-amber-50 p-2.5 rounded-lg border border-amber-200 mb-3">
+                            <b>💡 原則：</b>抹茶採主選＋備選策略，不排隊1-2小時，避免拖垮宇治行程。
+                        </div>
+                    </div>
+                    <div class="border-t border-[#f4efe6] pt-3 text-xs text-jp-secondary flex items-center justify-between font-medium">
+                        <span><i class="fa-solid fa-hotel"></i> 京都四条大宮</span>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Byodoin+Temple" target="_blank" class="map-link text-[11px]">平等院地圖 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>
+                    </div>
+                </div>
+
+                <!-- DAY 4 -->
+                <div class="jp-card p-6 bg-white flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="bg-jp-primary text-white text-xs font-bold px-3 py-1 rounded-full">DAY 4</span>
+                            <span class="text-xs font-bold text-jp-muted">10/13（二）</span>
+                        </div>
+                        <h3 class="font-bold text-jp-text text-base mb-3 leading-snug">京都退房 → 大阪 → 天保山 → 空庭溫泉</h3>
+                        <div class="text-xs text-jp-text space-y-2 mb-4 leading-relaxed font-medium bg-[#fcfaf7] p-3 rounded-xl border border-[#f4efe6]">
+                            <p><b>08:00</b> 起床早餐＋整理行李</p>
+                            <p><b>09:00</b> 京都飯店退房出發</p>
+                            <p><b>09:00-10:00</b> 🚆 京都 → <a href="https://www.google.com/maps/search/?api=1&query=Bentencho+Station" target="_blank" class="map-link">弁天町 📍</a></p>
+                            <p><b>10:00-10:30</b> 🏨 <a href="https://www.google.com/maps/search/?api=1&query=ART+HOTEL+Osaka+Bay+Tower" target="_blank" class="map-link">ART HOTEL 📍</a> 寄放行李</p>
+                            <p><b>10:30-12:30</b> 🌊 <a href="https://www.google.com/maps/search/?api=1&query=Tempozan+Marketplace" target="_blank" class="map-link">天保山 Market Place 📍</a> 散步購物</p>
+                            <p><b>12:30-13:30</b> 🍜 天保山現場午餐</p>
+                            <p><b>13:30-14:30</b> 返回飯店附近</p>
+                            <p><b>15:00</b> 🏨 飯店 Check-in</p>
+                            <p><b>15:00-20:00</b> ♨️ <a href="https://www.google.com/maps/search/?api=1&query=Solaniwa+Onsen+OSAKA+BAY+TOWER" target="_blank" class="map-link">空庭溫泉 OSAKA BAY TOWER 📍</a></p>
+                            <p><b>20:00-20:20</b> 🛒 <a href="https://www.google.com/maps/search/?api=1&query=Lopia+Osaka+Bay+Tower" target="_blank" class="map-link">Lopia 大阪Bay Tower 📍</a> (買USJ糧食)</p>
+                        </div>
+                        <div class="text-[11px] text-amber-800 bg-amber-50 p-2.5 rounded-lg border border-amber-200 mb-3">
+                            <b>💡 原則：</b>換飯店日一律先寄放行李，下午3點入住後泡溫泉。
+                        </div>
+                    </div>
+                    <div class="border-t border-[#f4efe6] pt-3 text-xs text-jp-secondary flex items-center justify-between font-medium">
+                        <span><i class="fa-solid fa-hotel"></i> ART HOTEL Osaka</span>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Solaniwa+Onsen+OSAKA+BAY+TOWER" target="_blank" class="map-link text-[11px]">空庭溫泉 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>
+                    </div>
+                </div>
+
+                <!-- DAY 5 -->
+                <div class="jp-card p-6 bg-white flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="bg-jp-primary text-white text-xs font-bold px-3 py-1 rounded-full">DAY 5</span>
+                            <span class="text-xs font-bold text-jp-muted">10/14（三）</span>
+                        </div>
+                        <h3 class="font-bold text-jp-text text-base mb-3 leading-snug">UNIVERSAL STUDIOS JAPAN 全天</h3>
+                        <div class="text-xs text-jp-text space-y-2 mb-4 leading-relaxed font-medium bg-[#fcfaf7] p-3 rounded-xl border border-[#f4efe6]">
+                            <p><b>05:30</b> 起床＋簡單早餐</p>
+                            <p><b>06:00-06:20</b> 飯店 → 弁天町站</p>
+                            <p><b>06:20-07:00</b> 🚆 弁天町 → <a href="https://www.google.com/maps/search/?api=1&query=Universal-City+Station" target="_blank" class="map-link">Universal City 站 📍</a></p>
+                            <p><b>07:00-開園</b> 排隊＋入園準備</p>
+                            <p><b>開園～閉園</b> 🎢 <a href="https://www.google.com/maps/search/?api=1&query=Universal+Studios+Japan" target="_blank" class="map-link">UNIVERSAL STUDIOS JAPAN 📍</a> (完全按USJ攻略執行)</p>
+                            <p><b>閉園後</b> Universal City → 弁天町 → 飯店</p>
+                        </div>
+                        <div class="text-[11px] text-amber-800 bg-amber-50 p-2.5 rounded-lg border border-amber-200 mb-3">
+                            <b>💡 備註：</b>本日不安排其他景點，USJ從開園玩到閉園！
+                        </div>
+                    </div>
+                    <div class="border-t border-[#f4efe6] pt-3 text-xs text-jp-secondary flex items-center justify-between font-medium">
+                        <span><i class="fa-solid fa-hotel"></i> ART HOTEL Osaka</span>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Universal+Studios+Japan" target="_blank" class="map-link text-[11px]">USJ地圖 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>
+                    </div>
+                </div>
+
+                <!-- DAY 6 -->
+                <div class="jp-card p-6 bg-white flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="bg-jp-primary text-white text-xs font-bold px-3 py-1 rounded-full">DAY 6</span>
+                            <span class="text-xs font-bold text-jp-muted">10/15（四）</span>
+                        </div>
+                        <h3 class="font-bold text-jp-text text-base mb-3 leading-snug">新世界、日本橋、難波 ＆ HARUKAS</h3>
+                        <div class="text-xs text-jp-text space-y-2 mb-4 leading-relaxed font-medium bg-[#fcfaf7] p-3 rounded-xl border border-[#f4efe6]">
+                            <p><b>08:00</b> 起床＋早餐</p>
+                            <p><b>09:00</b> ART HOTEL 退房</p>
+                            <p><b>09:20-09:45</b> 🚆 弁天町 → <a href="https://www.google.com/maps/search/?api=1&query=Shin-Imamiya+Station" target="_blank" class="map-link">新今宮 📍</a></p>
+                            <p><b>09:45-10:00</b> 🏨 <a href="https://www.google.com/maps/search/?api=1&query=Apartment+Hotel+11+新今宮1" target="_blank" class="map-link">住一新今宮1號店 📍</a> 寄行李</p>
+                            <p><b>10:00-10:45</b> ⛩️ <a href="https://www.google.com/maps/search/?api=1&query=Imamiya+Ebisu+Shrine" target="_blank" class="map-link">今宮戎神社 📍</a> (參拜御朱印)</p>
+                            <p><b>10:45-11:30</b> 🍢 <a href="https://www.google.com/maps/search/?api=1&query=Shinsekai+Osaka" target="_blank" class="map-link">新世界 📍</a> 小吃散策</p>
+                            <p><b>11:30-12:30</b> 🗼 <a href="https://www.google.com/maps/search/?api=1&query=Tsutenkaku" target="_blank" class="map-link">通天閣 📍</a> (依人潮決定登塔)</p>
+                            <p><b>12:30-14:30</b> 🎮 <a href="https://www.google.com/maps/search/?api=1&query=Nipponbashi+Ota+Road" target="_blank" class="map-link">日本橋オタロード 📍</a> (動漫電器)</p>
+                            <p><b>14:30-15:30</b> 🍜 難波午餐</p>
+                            <p><b>15:30-16:30</b> 🛍️ <a href="https://www.google.com/maps/search/?api=1&query=Namba+Parks" target="_blank" class="map-link">難波購物 📍</a> (Parks/CITY/高島屋)</p>
+                            <p><b>16:30-16:50</b> 🚇 難波 → 天王寺 (御堂筋線)</p>
+                            <p><b>16:50-19:00</b> 🌇 <a href="https://www.google.com/maps/search/?api=1&query=HARUKAS+300" target="_blank" class="map-link">HARUKAS 300 📍</a> (夕陽夜景)</p>
+                            <p><b>19:00-20:30</b> 🍽️ HARUKAS晚餐 (竹葉亭/江戸川/利久牛舌/東洋亭/KYK/すし銘/ZK擇一)</p>
+                            <p><b>20:30-21:00</b> 🚆 天王寺 → 新今宮</p>
+                        </div>
+                        <div class="text-[11px] text-amber-800 bg-amber-50 p-2.5 rounded-lg border border-amber-200 mb-3">
+                            <b>💡 錨點：</b>大阪10/15日落約17:24，16:50進場HARUKAS最完美銜接夕陽與夜景。
+                        </div>
+                    </div>
+                    <div class="border-t border-[#f4efe6] pt-3 text-xs text-jp-secondary flex items-center justify-between font-medium">
+                        <span><i class="fa-solid fa-hotel"></i> 住一新今宮1號店</span>
+                        <a href="https://www.google.com/maps/search/?api=1&query=HARUKAS+300" target="_blank" class="map-link text-[11px]">HARUKAS <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>
+                    </div>
+                </div>
+
+                <!-- DAY 7 -->
+                <div class="jp-card p-6 bg-white flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="bg-jp-primary text-white text-xs font-bold px-3 py-1 rounded-full">DAY 7</span>
+                            <span class="text-xs font-bold text-jp-muted">10/16（五）</span>
+                        </div>
+                        <h3 class="font-bold text-jp-text text-base mb-3 leading-snug">道頓堀、蟹道樂、心齋橋 ＆ Green</h3>
+                        <div class="text-xs text-jp-text space-y-2 mb-4 leading-relaxed font-medium bg-[#fcfaf7] p-3 rounded-xl border border-[#f4efe6]">
+                            <p><b>09:00</b> 起床＋早餐</p>
+                            <p><b>10:00-10:30</b> 🚇 新今宮 → <a href="https://www.google.com/maps/search/?api=1&query=Namba+Station" target="_blank" class="map-link">難波 📍</a></p>
+                            <p><b>10:30-12:15</b> 🌃 <a href="https://www.google.com/maps/search/?api=1&query=Dotonbori+Glico+Sign" target="_blank" class="map-link">道頓堀 📍</a> (戎橋、固力果跑跑人)</p>
+                            <p><b>12:30-14:00</b> 🦀 <a href="https://www.google.com/maps/search/?api=1&query=蟹道樂+道頓堀中店" target="_blank" class="map-link">蟹道樂 道頓堀中店 📍</a>【已預約 包廂景觀】</p>
+                            <p><b>14:00-17:15</b> 🛍️ <a href="https://www.google.com/maps/search/?api=1&query=Shinsaibashi-suji+Shopping+Street" target="_blank" class="map-link">心齋橋購物 📍</a> (商店街、大丸、PARCO)</p>
+                            <p><b>17:15-18:00</b> 🚶／🚇 心齋橋 → Green (預留45分)</p>
+                            <p><b>18:00-20:00</b> 🥩 <a href="https://www.google.com/maps/search/?api=1&query=自然とお肉+green" target="_blank" class="map-link">自然とお肉 green 📍</a>【已預約 9品Course】</p>
+                            <p><b>20:00-20:30</b> 返回新今宮</p>
+                            <p><b>20:30後</b> 整理回國行李</p>
+                        </div>
+                        <div class="text-[11px] text-amber-800 bg-amber-50 p-2.5 rounded-lg border border-amber-200 mb-3">
+                            <b>⚠️ 重要：</b>Green為18:00固定預約，17:15左右絕對必須離開心齋橋！
+                        </div>
+                    </div>
+                    <div class="border-t border-[#f4efe6] pt-3 text-xs text-jp-secondary flex items-center justify-between font-medium">
+                        <span><i class="fa-solid fa-hotel"></i> 住一新今宮1號店</span>
+                        <a href="https://www.google.com/maps/search/?api=1&query=蟹道樂+道頓堀中店" target="_blank" class="map-link text-[11px]">蟹道樂地圖 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>
+                    </div>
+                </div>
+
+                <!-- DAY 8 -->
+                <div class="jp-card p-6 bg-white flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="bg-jp-primary text-white text-xs font-bold px-3 py-1 rounded-full">DAY 8</span>
+                            <span class="text-xs font-bold text-jp-muted">10/17（六）</span>
+                        </div>
+                        <h3 class="font-bold text-jp-text text-base mb-3 leading-snug">Rinku Outlets ✈️ KIX ➔ 桃園</h3>
+                        <div class="text-xs text-jp-text space-y-2 mb-4 leading-relaxed font-medium bg-[#fcfaf7] p-3 rounded-xl border border-[#f4efe6]">
+                            <p><b>08:00</b> 起床</p>
+                            <p><b>09:00-09:20</b> 早餐</p>
+                            <p><b>09:30</b> 🏨 新今宮飯店退房</p>
+                            <p><b>09:30-10:15</b> 🚆 新今宮 → <a href="https://www.google.com/maps/search/?api=1&query=Rinku-Town+Station" target="_blank" class="map-link">Rinku Town 📍</a> (JR關空快速)</p>
+                            <p><b>10:15-10:30</b> 行李寄放</p>
+                            <p><b>10:30-11:45</b> 🛍️ <a href="https://www.google.com/maps/search/?api=1&query=Rinku+Premium+Outlets" target="_blank" class="map-link">Rinku Premium Outlets 📍</a> (約75分鐘)</p>
+                            <p><b>11:45-12:00</b> 取行李＋前往車站</p>
+                            <p><b>12:00-12:20</b> 🚆 Rinku Town → KIX</p>
+                            <p><b>12:20-12:40</b> 抵達 <a href="https://www.google.com/maps/search/?api=1&query=Kansai+International+Airport+Terminal+2" target="_blank" class="map-link">KIX T2 📍</a> (樂桃國際線)</p>
+                            <p><b>12:40-13:15</b> ✈️ Check-in ＋ 托運</p>
+                            <p><b>13:15-13:45</b> 安檢 ＋ 出境</p>
+                            <p><b>13:45-14:35</b> 🛍️ 機場免稅店最後採買</p>
+                            <p><b>14:50</b> 前往登機門</p>
+                            <p><b>15:15</b> ✈️ Peach MM027 起飛</p>
+                            <p><b>17:30</b> 抵達 <a href="https://www.google.com/maps/search/?api=1&query=Taiwan+Taoyuan+International+Airport" target="_blank" class="map-link">桃園溫暖的家 📍</a></p>
+                        </div>
+                        <div class="text-[11px] text-amber-800 bg-amber-50 p-2.5 rounded-lg border border-amber-200 mb-3">
+                            <b>💡 優先原則：</b>回程航班最高優先！若Rinku購物超時直接縮短，決不壓縮機場報到。
+                        </div>
+                    </div>
+                    <div class="border-t border-[#f4efe6] pt-3 text-xs text-jp-secondary flex items-center justify-between font-medium">
+                        <span><i class="fa-solid fa-house"></i> 返回溫暖的家</span>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Rinku+Premium+Outlets" target="_blank" class="map-link text-[11px]">Rinku Outlets <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 固定預約總表 -->
+        <section id="reservations" class="scroll-mt-28">
+            <div class="flex items-center gap-2 mb-6 border-b-2 border-dashed border-[#e6ded3] pb-3">
+                <span class="text-jp-primary text-2xl">📌</span>
+                <h2 class="text-2xl font-bold text-jp-text">固定預約總表</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="jp-card p-6 bg-white border-l-4 border-l-jp-primary">
+                    <div class="text-xs font-bold text-jp-primary mb-1">10/10（六）18:30 ～ 20:30</div>
+                    <h3 class="font-bold text-jp-text text-lg mb-2">
+                        <a href="https://www.google.com/maps/search/?api=1&query=燒肉+弘商店+烏丸錦" target="_blank" rel="noopener noreferrer" class="map-link">
+                            🥩 燒肉 弘商店 烏丸錦 <i class="fa-solid fa-map-location-dot"></i>
+                        </a>
+                    </h3>
+                    <p class="text-xs text-jp-muted leading-relaxed">人數：2人<br>飲込み5,000円燒肉Course (~¥5,000/人)<br><span class="text-emerald-700 font-bold mt-2 inline-block">✓ 已預約</span></p>
+                </div>
+
+                <div class="jp-card p-6 bg-white border-l-4 border-l-jp-primary">
+                    <div class="text-xs font-bold text-jp-primary mb-1">10/16（五）12:30 ～ 14:00</div>
+                    <h3 class="font-bold text-jp-text text-lg mb-2">
+                        <a href="https://www.google.com/maps/search/?api=1&query=蟹道樂+道頓堀中店" target="_blank" rel="noopener noreferrer" class="map-link">
+                            🦀 蟹道樂 道頓堀中店 <i class="fa-solid fa-map-location-dot"></i>
+                        </a>
+                    </h3>
+                    <p class="text-xs text-jp-muted leading-relaxed">人數：2人｜私人包廂<br>希望安排道頓堀川景觀房間<br><span class="text-emerald-700 font-bold mt-2 inline-block">✓ 已預約</span></p>
+                </div>
+
+                <div class="jp-card p-6 bg-white border-l-4 border-l-jp-primary">
+                    <div class="text-xs font-bold text-jp-primary mb-1">10/16（五）18:00 ～ 20:00</div>
+                    <h3 class="font-bold text-jp-text text-lg mb-2">
+                        <a href="https://www.google.com/maps/search/?api=1&query=自然とお肉+green" target="_blank" rel="noopener noreferrer" class="map-link">
+                            🥩 自然とお肉 green <i class="fa-solid fa-map-location-dot"></i>
+                        </a>
+                    </h3>
+                    <p class="text-xs text-jp-muted leading-relaxed">人數：2人｜9品＋120分放題<br>¥4,000/人 ＋ お通し ¥439 (Counter座位)<br><span class="text-emerald-700 font-bold mt-2 inline-block">✓ 已預約</span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 雙欄區塊：行前清單 & 匯率換算 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            <!-- 行前打勾清單 -->
+            <section id="checklist" class="scroll-mt-28">
+                <div class="flex items-center gap-2 mb-6 border-b-2 border-dashed border-[#e6ded3] pb-3">
+                    <span class="text-jp-primary text-2xl">📝</span>
+                    <h2 class="text-2xl font-bold text-jp-text">行前打勾清單</h2>
+                </div>
+                <div class="jp-card p-6 bg-white">
+                    <div class="flex justify-between items-center mb-4 text-xs font-bold text-jp-muted">
+                        <span>打包進度追蹤</span>
+                        <span id="progressText" class="text-jp-primary">0 / 6 已完成</span>
+                    </div>
+                    <!-- 進度條 -->
+                    <div class="w-full bg-[#f4efe6] h-2.5 rounded-full mb-6 overflow-hidden">
+                        <div id="progressBar" class="bg-jp-primary h-full w-0 transition-all duration-300 rounded-full"></div>
+                    </div>
+                    <!-- 清單項目 -->
+                    <div class="space-y-3" id="checklistContainer">
+                        <label class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#fcfaf7] cursor-pointer transition border border-transparent hover:border-[#e6ded3]">
+                            <input type="checkbox" class="checklist-item w-5 h-5 accent-[#b85d38] rounded cursor-pointer">
+                            <span class="text-sm font-medium text-jp-text">護照正本 (效期需滿 6 個月以上)</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#fcfaf7] cursor-pointer transition border border-transparent hover:border-[#e6ded3]">
+                            <input type="checkbox" class="checklist-item w-5 h-5 accent-[#b85d38] rounded cursor-pointer">
+                            <span class="text-sm font-medium text-jp-text">Visit Japan Web 填寫完成與截圖</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#fcfaf7] cursor-pointer transition border border-transparent hover:border-[#e6ded3]">
+                            <input type="checkbox" class="checklist-item w-5 h-5 accent-[#b85d38] rounded cursor-pointer">
+                            <span class="text-sm font-medium text-jp-text">日幣現金與信用卡 (JCB、Visa)</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#fcfaf7] cursor-pointer transition border border-transparent hover:border-[#e6ded3]">
+                            <input type="checkbox" class="checklist-item w-5 h-5 accent-[#b85d38] rounded cursor-pointer">
+                            <span class="text-sm font-medium text-jp-text">網卡 / eSIM 網路準備</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#fcfaf7] cursor-pointer transition border border-transparent hover:border-[#e6ded3]">
+                            <input type="checkbox" class="checklist-item w-5 h-5 accent-[#b85d38] rounded cursor-pointer">
+                            <span class="text-sm font-medium text-jp-text">轉接頭與行動電源</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#fcfaf7] cursor-pointer transition border border-transparent hover:border-[#e6ded3]">
+                            <input type="checkbox" class="checklist-item w-5 h-5 accent-[#b85d38] rounded cursor-pointer">
+                            <span class="text-sm font-medium text-jp-text">住宿預約單與樂桃機票證明</span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 匯率計算小工具 -->
+            <section id="calculator" class="scroll-mt-28">
+                <div class="flex items-center gap-2 mb-6 border-b-2 border-dashed border-[#e6ded3] pb-3">
+                    <span class="text-jp-primary text-2xl">💰</span>
+                    <h2 class="text-2xl font-bold text-jp-text">匯率換算小工具</h2>
+                </div>
+                <div class="jp-card p-6 bg-white flex flex-col justify-between h-[calc(100%-3.5rem)]">
+                    <div class="space-y-4">
+                        <div class="text-xs bg-[#faedcd] text-[#9c6644] p-3 rounded-xl flex items-center justify-between font-bold">
+                            <span><i class="fa-solid fa-circle-info mr-1"></i> 參考匯率 (TWD / JPY)</span>
+                            <span id="rateDisplay">1 TWD ≈ 4.75 JPY</span>
+                        </div>
+
+                        <!-- 台幣輸入 -->
+                        <div>
+                            <label class="block text-xs font-bold text-jp-muted mb-1">台幣 (TWD)</label>
+                            <div class="relative">
+                                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-jp-muted font-bold">$</span>
+                                <input type="number" id="twdInput" value="1000" class="w-full pl-9 pr-4 py-3 bg-[#fcfaf7] border border-[#e6ded3] rounded-xl focus:outline-none focus:border-jp-primary focus:bg-white text-base font-bold text-jp-text transition" placeholder="輸入台幣金額">
+                            </div>
+                        </div>
+
+                        <!-- 箭頭 -->
+                        <div class="text-center text-jp-muted text-sm">
+                            <i class="fa-solid fa-arrow-down-long"></i>
+                        </div>
+
+                        <!-- 日幣輸入 -->
+                        <div>
+                            <label class="block text-xs font-bold text-jp-muted mb-1">日幣 (JPY)</label>
+                            <div class="relative">
+                                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-jp-muted font-bold">¥</span>
+                                <input type="number" id="jpyInput" value="4750" class="w-full pl-9 pr-4 py-3 bg-[#fcfaf7] border border-[#e6ded3] rounded-xl focus:outline-none focus:border-jp-primary focus:bg-white text-base font-bold text-jp-text transition" placeholder="輸入日幣金額">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-[#f4efe6] flex items-center justify-between text-xs text-jp-muted">
+                        <span>可自由修改上方或下方金額進行換算</span>
+                        <button id="resetCalc" class="hover:text-jp-primary transition font-bold underline">重設</button>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="bg-white border-t-2 border-[#e6ded3] mt-16 py-8 text-center text-xs text-jp-muted">
+        <p>🌿 Bon Voyage! 祝京阪大阪 8天7夜 溫馨旅程一切順利 ✈️🍵</p>
+    </footer>
+
+    <!-- JavaScript 互動邏輯 -->
+    <script>
+        // 手機版選單切換
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 點擊手機選單項目自動收合
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // 行前清單互動與進度條
+        const checkboxes = document.querySelectorAll('.checklist-item');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+
+        function updateProgress() {
+            const total = checkboxes.length;
+            const checked = document.querySelectorAll('.checklist-item:checked').length;
+            const percentage = (checked / total) * 100;
+            progressBar.style.width = percentage + '%';
+            progressText.textContent = `${checked} / ${total} 已完成`;
+        }
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', updateProgress);
+        });
+        updateProgress();
+
+        // 匯率換算邏輯 (1 TWD = 4.75 JPY)
+        const exchangeRate = 4.75;
+        const twdInput = document.getElementById('twdInput');
+        const jpyInput = document.getElementById('jpyInput');
+        const resetCalc = document.getElementById('resetCalc');
+
+        twdInput.addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value);
+            if (isNaN(val)) {
+                jpyInput.value = '';
+            } else {
+                jpyInput.value = Math.round(val * exchangeRate);
+            }
+        });
+
+        jpyInput.addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value);
+            if (isNaN(val)) {
+                twdInput.value = '';
+            } else {
+                twdInput.value = (val / exchangeRate).toFixed(1);
+            }
+        });
+
+        resetCalc.addEventListener('click', () => {
+            twdInput.value = '1000';
+            jpyInput.value = Math.round(1000 * exchangeRate);
+        });
+    </script>
+</body>
+</html>
