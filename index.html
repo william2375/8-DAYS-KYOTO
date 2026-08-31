@@ -232,7 +232,7 @@
             </div>
         </section>
 
-        <!-- D1-D8 行程卡片區塊 (附 Google Maps 定位) -->
+        <!-- D1-D8 行程卡片區塊 -->
         <section id="itinerary" class="scroll-mt-28">
             <div class="flex items-center justify-between mb-6 border-b-2 border-dashed border-[#e6ded3] pb-3">
                 <div class="flex items-center gap-2">
@@ -580,17 +580,17 @@
                 </div>
             </section>
 
-            <!-- 匯率計算小工具 -->
+            <!-- 匯率計算小工具 (即時 API 換算) -->
             <section id="calculator" class="scroll-mt-28">
                 <div class="flex items-center gap-2 mb-6 border-b-2 border-dashed border-[#e6ded3] pb-3">
                     <span class="text-jp-primary text-2xl">💰</span>
-                    <h2 class="text-2xl font-bold text-jp-text">匯率換算小工具</h2>
+                    <h2 class="text-2xl font-bold text-jp-text">即時匯率換算器</h2>
                 </div>
                 <div class="jp-card p-6 bg-white flex flex-col justify-between h-[calc(100%-3.5rem)]">
                     <div class="space-y-4">
-                        <div class="text-xs bg-[#faedcd] text-[#9c6644] p-3 rounded-xl flex items-center justify-between font-bold">
-                            <span><i class="fa-solid fa-circle-info mr-1"></i> 參考匯率 (TWD / JPY)</span>
-                            <span id="rateDisplay">1 TWD ≈ 4.75 JPY</span>
+                        <div class="text-xs bg-[#faedcd] text-[#9c6644] p-3 rounded-xl flex items-center justify-between font-bold flex-wrap gap-1">
+                            <span class="flex items-center"><i class="fa-solid fa-[#b85d38] fa-rotate text-jp-primary mr-1.5 animate-spin" id="rateSpinner"></i> 即時匯率 (TWD ➔ JPY)</span>
+                            <span id="rateDisplay">載入中...</span>
                         </div>
 
                         <!-- 台幣輸入 -->
@@ -602,9 +602,10 @@
                             </div>
                         </div>
 
-                        <!-- 箭頭 -->
-                        <div class="text-center text-jp-muted text-sm">
-                            <i class="fa-solid fa-arrow-down-long"></i>
+                        <!-- 箭頭與即時狀態 -->
+                        <div class="flex justify-between items-center text-xs text-jp-muted px-1">
+                            <span id="updateTimeText">最後更新：取得中...</span>
+                            <i class="fa-solid fa-arrow-down-long text-sm text-jp-primary"></i>
                         </div>
 
                         <!-- 日幣輸入 -->
@@ -612,14 +613,17 @@
                             <label class="block text-xs font-bold text-jp-muted mb-1">日幣 (JPY)</label>
                             <div class="relative">
                                 <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-jp-muted font-bold">¥</span>
-                                <input type="number" id="jpyInput" value="4750" class="w-full pl-9 pr-4 py-3 bg-[#fcfaf7] border border-[#e6ded3] rounded-xl focus:outline-none focus:border-jp-primary focus:bg-white text-base font-bold text-jp-text transition" placeholder="輸入日幣金額">
+                                <input type="number" id="jpyInput" value="" class="w-full pl-9 pr-4 py-3 bg-[#fcfaf7] border border-[#e6ded3] rounded-xl focus:outline-none focus:border-jp-primary focus:bg-white text-base font-bold text-jp-text transition" placeholder="輸入日幣金額">
                             </div>
                         </div>
                     </div>
 
                     <div class="mt-6 pt-4 border-t border-[#f4efe6] flex items-center justify-between text-xs text-jp-muted">
-                        <span>可自由修改上方或下方金額進行換算</span>
-                        <button id="resetCalc" class="hover:text-jp-primary transition font-bold underline">重設</button>
+                        <span>雙向輸入均可實時連動計算</span>
+                        <div class="flex gap-3">
+                            <button id="refreshRateBtn" class="hover:text-jp-primary transition font-bold"><i class="fa-solid fa-arrows-rotate mr-1"></i>刷新</button>
+                            <button id="resetCalc" class="hover:text-jp-primary transition font-bold underline">重設</button>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -667,34 +671,79 @@
         });
         updateProgress();
 
-        // 匯率換算邏輯 (1 TWD = 4.75 JPY)
-        const exchangeRate = 4.75;
+        // ----------------------------------------------------
+        // 即時匯率 API 抓取邏輯 (open.er-api.com)
+        // ----------------------------------------------------
+        let currentRate = 5.04; // 預設備用匯率
+        const rateDisplay = document.getElementById('rateDisplay');
+        const updateTimeText = document.getElementById('updateTimeText');
+        const rateSpinner = document.getElementById('rateSpinner');
         const twdInput = document.getElementById('twdInput');
         const jpyInput = document.getElementById('jpyInput');
         const resetCalc = document.getElementById('resetCalc');
+        const refreshRateBtn = document.getElementById('refreshRateBtn');
 
-        twdInput.addEventListener('input', (e) => {
-            const val = parseFloat(e.target.value);
-            if (isNaN(val)) {
+        async function fetchLiveExchangeRate() {
+            rateSpinner.classList.add('animate-spin');
+            rateDisplay.textContent = '更新中...';
+
+            try {
+                // 嘗試從免費 Exchange Rate API 獲取最新的 TWD 對 JPY 匯率
+                const response = await fetch('https://open.er-api.com/v6/latest/TWD');
+                if (!response.ok) throw new Error('Network error');
+                
+                const data = await response.json();
+                if (data && data.rates && data.rates.JPY) {
+                    currentRate = data.rates.JPY;
+                    rateDisplay.textContent = `1 TWD ≈ ${currentRate.toFixed(2)} JPY`;
+                    
+                    const updateDate = data.time_last_update_utc 
+                        ? new Date(data.time_last_update_utc).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' })
+                        : '剛剛';
+                    updateTimeText.textContent = `即時匯率 (${updateDate} 更新)`;
+                } else {
+                    throw new Error('Invalid rate format');
+                }
+            } catch (err) {
+                console.warn('無法抓取即時匯率，切換至備用預設匯率', err);
+                rateDisplay.textContent = `1 TWD ≈ ${currentRate.toFixed(2)} JPY (預設)`;
+                updateTimeText.textContent = '離線或預設匯率';
+            } finally {
+                rateSpinner.classList.remove('animate-spin');
+                recalculateJPY();
+            }
+        }
+
+        function recalculateJPY() {
+            const twdVal = parseFloat(twdInput.value);
+            if (isNaN(twdVal) || twdVal <= 0) {
                 jpyInput.value = '';
             } else {
-                jpyInput.value = Math.round(val * exchangeRate);
+                jpyInput.value = Math.round(twdVal * currentRate);
             }
-        });
+        }
 
-        jpyInput.addEventListener('input', (e) => {
-            const val = parseFloat(e.target.value);
-            if (isNaN(val)) {
+        function recalculateTWD() {
+            const jpyVal = parseFloat(jpyInput.value);
+            if (isNaN(jpyVal) || jpyVal <= 0) {
                 twdInput.value = '';
             } else {
-                twdInput.value = (val / exchangeRate).toFixed(1);
+                twdInput.value = (jpyVal / currentRate).toFixed(1);
             }
-        });
+        }
+
+        twdInput.addEventListener('input', recalculateJPY);
+        jpyInput.addEventListener('input', recalculateTWD);
 
         resetCalc.addEventListener('click', () => {
             twdInput.value = '1000';
-            jpyInput.value = Math.round(1000 * exchangeRate);
+            recalculateJPY();
         });
+
+        refreshRateBtn.addEventListener('click', fetchLiveExchangeRate);
+
+        // 頁面載入時自動更新匯率
+        window.addEventListener('DOMContentLoaded', fetchLiveExchangeRate);
     </script>
 </body>
 </html>
